@@ -1,22 +1,56 @@
 import { Image, TouchableOpacity, View, StyleSheet } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import uploadPhotoToServer, {
+  firebaseStore,
+} from "../firebase/uploadPotoToServer";
 import AddIconAvatar from "../assets/icon/AddIconAvatar";
 import DeleteIconAvatar from "../assets/icon/DeleteIconAvatar";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../Redux/auth/authSelectors";
+import { authUpdateAvatar } from "../Redux/auth/authOperetions";
 
-const Avatar = () => {
+const Avatar = ({ avatarImg, setAvatarImg }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+
+  const addImage = async () => {
+    if (avatarImg) {
+      dispatch(authUpdateAvatar(""));
+      setAvatarImg("");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const photoUrl = await uploadPhotoToServer(
+        result.assets[0].uri,
+        firebaseStore.avatar
+      );
+      setAvatarImg(photoUrl);
+      if (user.currentUser) {
+        dispatch(authUpdateAvatar(photoUrl));
+      }
+    }
+  };
+
   return (
     <View style={styles.containerAvatar}>
-      <Image
-        style={styles.img}
-        source={require("../assets/Image/avatar_img.png")}
-      />
-      <TouchableOpacity style={styles.btnAvatar}>
-        <AddIconAvatar />
+      {avatarImg && <Image style={styles.img} source={{ uri: avatarImg }} />}
+      <TouchableOpacity style={styles.btnAvatar} onPress={addImage}>
+        {!avatarImg ? <AddIconAvatar /> : <DeleteIconAvatar />}
       </TouchableOpacity>
     </View>
   );
 };
 
 export default Avatar;
+
 const styles = StyleSheet.create({
   containerAvatar: {
     position: "relative",

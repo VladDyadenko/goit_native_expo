@@ -7,7 +7,7 @@ import {
 import { useFont } from "../assets/fonts/fontsExpoLoading";
 import styles from "../screens/Auth/authStyle";
 
-const KayboardBox = ({ children, keyboardHaide }) => {
+const KayboardBox = ({ children, keyboardHide }) => {
   const { fonts, onLayoutRootView } = useFont();
 
   if (!fonts) {
@@ -15,10 +15,10 @@ const KayboardBox = ({ children, keyboardHaide }) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHaide}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <KeyboardAvoidingView
         style={{ flex: 1, maxHeight: "100%" }}
-        // behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <ImageBackground

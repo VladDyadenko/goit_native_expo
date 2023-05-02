@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 import {
   View,
   TextInput,
@@ -6,6 +8,8 @@ import {
   Text,
   Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authLogin } from "../../Redux/auth/authOperetions";
 
 import KayboardBox from "../../components/KayboardBox";
 import styles from "./authStyle";
@@ -15,16 +19,29 @@ const initialState = {
   password: "",
 };
 
-export default function Login({ navigation }) {
+export default function Login() {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  const keyboardHaide = () => {
-    setisShowKeyboard(false);
-    Keyboard.dismiss();
-    console.log(state);
+  const handleSubmit = () => {
+    if (state.email === "" || state.password === "") {
+      Toast.show({
+        type: "error",
+        text1: "Form error:",
+        text2: "Email, Password повинні бути заповнені.",
+      });
+      return;
+    }
+    dispatch(authLogin(state));
     setState(initialState);
+  };
+
+  const keyboardHide = () => {
+    Keyboard.dismiss();
+    setisShowKeyboard(false);
   };
 
   const togglePasswordVisibility = () => {
@@ -32,7 +49,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <KayboardBox keyboardHaide={keyboardHaide}>
+    <KayboardBox keyboardHide={keyboardHide}>
       <View style={{ ...styles.form, paddingBottom: isShowKeyboard ? 32 : 78 }}>
         <Text style={styles.title}>Увійти</Text>
 
@@ -85,8 +102,8 @@ export default function Login({ navigation }) {
         </View>
         {!isShowKeyboard && (
           <>
-            <TouchableOpacity onPress={keyboardHaide} style={styles.btn}>
-              <Text style={styles.btnText}>Зареєструватися</Text>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
+              <Text style={styles.btnText}>Увійти</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate("Register")}>

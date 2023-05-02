@@ -1,16 +1,14 @@
 import { StyleSheet } from "react-native";
 
-
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     backgroundColor: "#fff",
     resizeMode: "cover",
     justifyContent: "flex-end",
-    
   },
   input: {
-    fontFamily: 'roboto400',
+    fontFamily: "roboto400",
     paddingHorizontal: 16,
     paddingVertical: 16,
     width: "100%",
@@ -20,9 +18,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
-    backgroundColor:"#F6F6F6",
+    backgroundColor: "#F6F6F6",
   },
-    containerAvatar: {
+  containerAvatar: {
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily:'roboto500',
+    fontFamily: "roboto500",
     marginBottom: 32,
     fontSize: 30,
     lineHeight: 35,
@@ -62,20 +60,20 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   btnText: {
-    fontFamily: 'roboto400',
+    fontFamily: "roboto400",
     fontSize: 16,
     lineHeight: 19,
     color: "#fff",
   },
   text: {
-    fontFamily: 'roboto400',
+    fontFamily: "roboto400",
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
     color: "#1B4371",
   },
   btnInputText: {
-    fontFamily: 'roboto400',
+    fontFamily: "roboto400",
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",

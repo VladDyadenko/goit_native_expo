@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   TextInput,
@@ -10,6 +12,8 @@ import {
 import Avatar from "../../components/Avatar";
 import KayboardBox from "../../components/KayboardBox";
 import styles from "./authStyle";
+import { authRegister } from "../../Redux/auth/authOperetions";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   nickname: "",
@@ -17,16 +21,43 @@ const initialState = {
   password: "",
 };
 
-export default function Register({ navigation }) {
+export default function Register() {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setisShowKeyboard] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [avatarImg, setAvatarImg] = useState("");
 
-  const keyboardHaide = () => {
-    setisShowKeyboard(false);
-    Keyboard.dismiss();
-    console.log(state);
+  console.log(avatarImg);
+
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    if (avatarImg === "") {
+      Toast.show({
+        type: "error",
+        text1: "Avatar error:",
+        text2: "Avatar повинен бути заповнений",
+      });
+      console.log("handleSubmit");
+      return;
+    }
+
+    if (state.email === "" || state.password === "" || state.nickname === "") {
+      Toast.show({
+        type: "error",
+        text1: "Form error:",
+        text2: "Email, Password та Nickname повинні бути заповнені.",
+      });
+      return;
+    }
+    dispatch(authRegister({ ...state, photoURL: avatarImg }));
     setState(initialState);
+  };
+
+  const keyboardHide = () => {
+    Keyboard.dismiss();
+    setisShowKeyboard(false);
   };
 
   const togglePasswordVisibility = () => {
@@ -34,15 +65,14 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <KayboardBox keyboardHaide={keyboardHaide}>
+    <KayboardBox keyboardHide={keyboardHide}>
       <View style={{ ...styles.form, paddingBottom: isShowKeyboard ? 32 : 78 }}>
         <View style={styles.containerAvatar}>
-          <Avatar />
+          <Avatar avatarImg={avatarImg} setAvatarImg={setAvatarImg} />
         </View>
         <Text style={styles.title}>Реєстрація</Text>
         <TextInput
           style={{ ...styles.input, marginBottom: 16 }}
-          keyboardType="email-address"
           placeholder="Логін"
           onFocus={() => {
             setisShowKeyboard(true);
@@ -101,7 +131,7 @@ export default function Register({ navigation }) {
         </View>
         {!isShowKeyboard && (
           <>
-            <TouchableOpacity onPress={keyboardHaide} style={styles.btn}>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
               <Text style={styles.btnText}>Зареєструватися</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
