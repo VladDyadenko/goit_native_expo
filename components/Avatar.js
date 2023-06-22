@@ -21,10 +21,10 @@ const Avatar = ({ avatarImg, setAvatarImg }) => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+      aspect: [1, 1],
+      quality: 0.5,
     });
 
     if (!result.canceled) {
@@ -33,6 +33,7 @@ const Avatar = ({ avatarImg, setAvatarImg }) => {
         firebaseStore.avatar
       );
       setAvatarImg(photoUrl);
+
       if (user.currentUser) {
         dispatch(authUpdateAvatar(photoUrl));
       }

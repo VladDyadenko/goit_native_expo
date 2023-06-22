@@ -13,6 +13,7 @@ import { authLogin } from "../../Redux/auth/authOperetions";
 
 import KayboardBox from "../../components/KayboardBox";
 import styles from "./authStyle";
+import { ImageBackground } from "react-native";
 
 const initialState = {
   email: "",
@@ -50,70 +51,77 @@ export default function Login() {
 
   return (
     <KayboardBox keyboardHide={keyboardHide}>
-      <View style={{ ...styles.form, paddingBottom: isShowKeyboard ? 32 : 78 }}>
-        <Text style={styles.title}>Увійти</Text>
+      <ImageBackground
+        source={require("../../assets/Image/PhotoBG.png")}
+        style={styles.backgroundImage}
+      >
+        <View
+          style={{ ...styles.form, paddingBottom: isShowKeyboard ? 32 : 78 }}
+        >
+          <Text style={styles.title}>Увійти</Text>
 
-        <TextInput
-          style={{ ...styles.input, marginBottom: 16 }}
-          autoComplete="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          placeholder="Адреса електронної пошти"
-          onFocus={() => {
-            setisShowKeyboard(true);
-          }}
-          value={state.email}
-          onChangeText={(val) =>
-            setState((prevState) => ({ ...prevState, email: val }))
-          }
-        />
-
-        <View style={{ position: "relative", width: "100%" }}>
           <TextInput
-            style={{
-              ...styles.input,
-              marginBottom: isShowKeyboard ? 0 : 43,
-            }}
-            secureTextEntry={!isPasswordVisible}
-            placeholder="Пароль"
+            style={{ ...styles.input, marginBottom: 16 }}
+            autoComplete="email"
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            placeholder="Адреса електронної пошти"
             onFocus={() => {
               setisShowKeyboard(true);
             }}
-            value={state.password}
+            value={state.email}
             onChangeText={(val) =>
-              setState((prevState) => ({ ...prevState, password: val }))
+              setState((prevState) => ({ ...prevState, email: val }))
             }
           />
 
-          <View style={{ position: "absolute", top: 0, right: 0 }}>
-            <TouchableOpacity
+          <View style={{ position: "relative", width: "100%" }}>
+            <TextInput
               style={{
-                ...styles.btnInput,
-                marginVertical: 16,
-                marginRight: 16,
+                ...styles.input,
+                marginBottom: isShowKeyboard ? 0 : 43,
               }}
-              onPress={togglePasswordVisibility}
-            >
-              <Text style={styles.btnInputText}>
-                {isPasswordVisible ? "Приховати" : "Показати"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        {!isShowKeyboard && (
-          <>
-            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-              <Text style={styles.btnText}>Увійти</Text>
-            </TouchableOpacity>
+              secureTextEntry={!isPasswordVisible}
+              placeholder="Пароль"
+              onFocus={() => {
+                setisShowKeyboard(true);
+              }}
+              value={state.password}
+              onChangeText={(val) =>
+                setState((prevState) => ({ ...prevState, password: val }))
+              }
+            />
 
-            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-              <Text style={styles.text}>
-                Немає акаунта?<Text style={styles.text}>Зареєструватися</Text>
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
+            <View style={{ position: "absolute", top: 0, right: 0 }}>
+              <TouchableOpacity
+                style={{
+                  ...styles.btnInput,
+                  marginVertical: 16,
+                  marginRight: 16,
+                }}
+                onPress={togglePasswordVisibility}
+              >
+                <Text style={styles.btnInputText}>
+                  {isPasswordVisible ? "Приховати" : "Показати"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {!isShowKeyboard && (
+            <>
+              <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
+                <Text style={styles.btnText}>Увійти</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                <Text style={styles.text}>
+                  Немає акаунта?<Text style={styles.text}>Зареєструватися</Text>
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </ImageBackground>
     </KayboardBox>
   );
 }

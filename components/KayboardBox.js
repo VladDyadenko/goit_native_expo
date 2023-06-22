@@ -1,5 +1,4 @@
 import {
-  ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   View,
@@ -21,12 +20,7 @@ const KayboardBox = ({ children, keyboardHide }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <ImageBackground
-            source={require("../assets/Image/PhotoBG.png")}
-            style={styles.backgroundImage}
-          >
-            {children}
-          </ImageBackground>
+          {children}
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

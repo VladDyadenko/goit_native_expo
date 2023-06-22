@@ -7,10 +7,17 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import uuid from "react-native-uuid";
 import * as Location from "expo-location";
 import MapPinIcon from "../../assets/icon/MapPinIcon ";
 import TrashIcon from "../../assets/icon/TrashIcon ";
 import CameraComponent from "../../components/CameraComponent";
+import { uploadPostToServer } from "../../Redux/posts/postsOperetions";
+import uploadPhotoToServer, {
+  firebaseStore,
+} from "../../firebase/uploadPotoToServer";
+import { useDispatch, useSelector } from "react-redux";
+// import { getPosts } from "../../Redux/posts/postsSelectors,js";
 
 const initialState = { title: "", place: "" };
 
@@ -21,11 +28,7 @@ const CreatePostsScreen = () => {
   const [resetPhoto, setResetPhoto] = useState(false);
 
   const navigation = useNavigation();
-
-  const onDataPictureTaken = (photo, location) => {
-    setPhoto(photo.uri);
-    setPlaceLocation(location);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -36,11 +39,39 @@ const CreatePostsScreen = () => {
     })();
   });
 
-  const sendPhoto = () => {
-    if (!photo) {
-      return;
-    }
-    navigation.navigate("DefaultScreen", { photo });
+  const onDataPictureTaken = (photo, location) => {
+    setPhoto(photo.uri);
+    setPlaceLocation(location);
+  };
+
+  const sendPost = async () => {
+    const photoUrl = await uploadPhotoToServer(photo, firebaseStore.post);
+
+    const data = {
+      ...info,
+      photo: photoUrl,
+      placeLocation,
+      createdAt: Date.now(),
+    };
+
+    const newPost = {
+      id: uuid.v4(),
+      title: data.title,
+      messageCount: 0,
+      likeCount: 0,
+      imgUri: data.photo,
+      location: data.place,
+      locationData: {
+        latitude: data?.placeLocation?.latitude ?? 0,
+        longitude: data?.placeLocation?.longitude ?? 0,
+      },
+      comments: [],
+    };
+    console.log(newPost);
+
+    dispatch(uploadPostToServer(newPost));
+
+    navigation.navigate("DefaultScreen");
     setPhoto(null);
     setResetPhoto(true);
   };
@@ -83,7 +114,7 @@ const CreatePostsScreen = () => {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.btn} onPress={sendPhoto}>
+      <TouchableOpacity style={styles.btn} onPress={sendPost}>
         <Text style={styles.btnText}>Опублікувати</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btnDelete}>

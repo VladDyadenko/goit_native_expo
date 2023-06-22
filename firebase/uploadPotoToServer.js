@@ -18,6 +18,7 @@ export default async function uploadPhotoToServer(image, firebaseStore) {
     await uploadBytes(storageRef, file);
 
     const postImageUrl = await getDownloadURL(storageRef);
+
     return postImageUrl;
   } catch (error) {
     console.log("uploadPhotoToServer::", error.message);

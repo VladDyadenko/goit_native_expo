@@ -14,10 +14,10 @@ export const authUpdateAvatar = (photoURL) => async (dispatch) => {
     await updateProfile(auth.currentUser, {
       photoURL,
     });
-    const userSuccess = auth.currentUser;
+    const user = auth.currentUser;
     dispatch(
       authSlice.actions.updateUserAvatar({
-        userAvatar: userSuccess.photoURL,
+        userAvatar: user.photoURL,
       })
     );
   } catch (error) {
@@ -26,12 +26,13 @@ export const authUpdateAvatar = (photoURL) => async (dispatch) => {
 };
 
 export const authRegister =
-  ({ email, password, nickname }) =>
+  ({ email, password, nickname, photoURL }) =>
   async (dispatch) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, {
         displayName: nickname,
+        photoURL,
       });
       const user = auth.currentUser;
       dispatch(
@@ -39,6 +40,7 @@ export const authRegister =
           userId: user.uid,
           nickname: user.displayName,
           userEmail: user.email,
+          userAvatar: user.photoURL,
         })
       );
       dispatch(authSlice.actions.authCurrentUser(true));
