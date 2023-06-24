@@ -11,29 +11,22 @@ import { db } from "../../firebase/config";
 import { toastError } from "../../toastInfo/error";
 import { postsAction } from "./postsSlice";
 
-const getAllPosts = () => async (dispatch, getState) => {
+export const getAllPosts = () => async (dispatch, getState) => {
   try {
     const { userId } = getState().auth;
 
-
     const posts = await getDocs(collection(db, "posts"));
-   
-
-
     const newPosts = posts.docs.map(async (doc) => {
-    
       const snapshotComments = await getCountFromServer(
         collection(doc.ref, "comments")
       );
       const countComments = snapshotComments.data().count;
 
- 
       const snapshotLikes = await getCountFromServer(
         collection(doc.ref, "likes")
       );
       const countLikes = snapshotLikes.data().count;
 
-    
       const q = query(
         collection(doc.ref, "likes"),
         where("authorId", "==", userId)
@@ -48,7 +41,6 @@ const getAllPosts = () => async (dispatch, getState) => {
         isLiked: !likes.empty,
       };
     });
-
 
     const payload = await Promise.all(newPosts);
 
@@ -64,19 +56,16 @@ const getOwnPosts = () => async (dispatch, getState) => {
     const posts = await getDocs(q);
 
     const newPosts = posts.docs.map(async (doc) => {
-   
       const snapshotComments = await getCountFromServer(
         collection(doc.ref, "comments")
       );
       const countComments = snapshotComments.data().count;
 
-    
       const snapshotLikes = await getCountFromServer(
         collection(doc.ref, "likes")
       );
       const countLikes = snapshotLikes.data().count;
 
-  
       const q = query(
         collection(doc.ref, "likes"),
         where("authorId", "==", userId)
@@ -92,7 +81,6 @@ const getOwnPosts = () => async (dispatch, getState) => {
       };
     });
 
-
     const payload = await Promise.all(newPosts);
 
     dispatch(postsAction.updateOwnPosts(payload));
@@ -102,13 +90,14 @@ const getOwnPosts = () => async (dispatch, getState) => {
 };
 
 export const uploadPostToServer = (post) => async (dispatch, getState) => {
-
   const { userId } = getState().auth;
+
   try {
     await addDoc(collection(db, "posts"), {
       ...post,
       userId,
     });
+
     dispatch(getAllPosts());
     dispatch(getOwnPosts());
   } catch (error) {

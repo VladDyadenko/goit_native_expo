@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { authSlice } from "./auth/authSlice";
-import {postsSlise} from './posts/postsSlice'
+import { postsSliсe } from "./posts/postsSlice";
 import {
   persistStore,
   persistReducer,
@@ -10,21 +10,20 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "redux-persist";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: AsyncStorage,
-}
+};
 
 const rootReduser = combineReducers({
   [authSlice.name]: authSlice.reducer,
-  [postsSlise.name]: postsSlise.reducer
+  [postsSliсe.name]: postsSliсe.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig,rootReduser)
-
+const persistedReducer = persistReducer(persistConfig, rootReduser);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -44,4 +43,3 @@ export const persistor = persistStore(store);
 //   let persistor = persistStore(store)
 //   return { store, persistor }
 // }
-

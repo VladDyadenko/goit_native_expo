@@ -34,7 +34,7 @@ const PostsScreen = () => {
           headerTitleAlign: "center",
           headerRight: () => (
             <TouchableOpacity
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 32 }}
               onPress={handelOutLogin}
             >
               <LogoutIcon />
