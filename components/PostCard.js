@@ -17,7 +17,7 @@ export const PostCard = ({
 
   const navigation = useNavigation();
   const onPressCommentsIcon = () => {
-    navigation.navigate("comments", { imgUri, comments, postId: post.id });
+    navigation.navigate("Comments", { imgUri, comments, postId: post?.id });
   };
   return (
     <View style={style.container}>
@@ -43,7 +43,7 @@ export const PostCard = ({
         </View>
         <TouchableOpacity
           style={style.sentence}
-          onPress={() => navigation.navigate("map", { location, locationData })}
+          onPress={() => navigation.navigate("Map", { location, locationData })}
         >
           <MapPinIcon />
           <Text style={style.sentenceText}>{location}</Text>
@@ -55,6 +55,7 @@ export const PostCard = ({
 
 const style = StyleSheet.create({
   container: {
+    width: "100%",
     backgroundColor: "#ffffff",
   },
   image: {

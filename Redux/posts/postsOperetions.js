@@ -105,3 +105,50 @@ export const uploadPostToServer = (post) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+export const addCommentByPostID =
+  (postId, commentData) => async (dispatch, getState) => {
+    try {
+      const { nickname, userId, userAvatar } = getState().auth;
+
+      const comment = {
+        comment: commentData,
+        autorName: nickname,
+        authorID: userId,
+        date: Date.now(),
+        postId: postId,
+        userAvatar: userAvatar,
+      };
+
+      const docRef = doc(db, "posts", postId);
+
+      await addDoc(collection(docRef, "comments"), { ...comment });
+
+      dispatch(getAllCommentsByPostId(postId));
+    } catch (error) {
+      toastError(error);
+    }
+  };
+
+export const getAllCommentsByPostId = (postId) => async (dispatch) => {
+  try {
+    const docRef = doc(db, "posts", postId);
+
+    const comments = await getDocs(collection(docRef, "comments"));
+
+    console.log(comments);
+
+    const payload = comments.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+      date: dateBeautify(doc.data().date),
+      dateForSort: doc.data().date,
+    }));
+
+    console.log(payload);
+
+    dispatch(postsAction.updateCommentsToPost(payload));
+    console.log("В стейт записано");
+  } catch (error) {
+    toastError(error);
+  }
+};

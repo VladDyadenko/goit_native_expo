@@ -36,7 +36,9 @@ export const store = configureStore({
   },
 });
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, {
+  timeout: 15000,
+});
 
 // export default () => {
 //   let store = createStore(persistedReducer)

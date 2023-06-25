@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { getAllPosts } from "../../Redux/posts/postsOperetions";
 import { ScrollView } from "react-native-gesture-handler";
 
-const PostsScreen = () => {
+const DefaultScreenPosts = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const user = useSelector(getUser);
@@ -35,9 +35,9 @@ const PostsScreen = () => {
             </View>
           </View>
 
-          <View>
+          <View style={{ flex: 1, width: "100%" }}>
             {posts?.map((post) => (
-              <View key={post.id} style={{ marginBottom: 10 }}>
+              <View key={post.id} style={{ marginBottom: 32, width: "100%" }}>
                 <PostCard
                   title={post.title}
                   likeCount={post.likeCount}
@@ -52,14 +52,10 @@ const PostsScreen = () => {
             ))}
           </View>
 
-          <Button
-            title="go to map"
-            onPress={() => navigation.navigate("Map")}
-          />
           <Button title="foto" onPress={() => navigation.navigate("Create")} />
           <Button
-            title="go to Comments"
-            onPress={() => navigation.navigate("Comments")}
+            title="profile"
+            onPress={() => navigation.navigate("Profile")}
           />
         </View>
       </ScrollView>
@@ -67,7 +63,7 @@ const PostsScreen = () => {
   );
 };
 
-export default PostsScreen;
+export default DefaultScreenPosts;
 
 const styles = StyleSheet.create({
   container: {
