@@ -49,7 +49,8 @@ export const getAllPosts = () => async (dispatch, getState) => {
     toastError(error);
   }
 };
-const getOwnPosts = () => async (dispatch, getState) => {
+
+export const getOwnPosts = () => async (dispatch, getState) => {
   try {
     const { userId } = getState().auth;
     const q = query(collection(db, "posts"), where("userId", "==", userId));
@@ -105,6 +106,7 @@ export const uploadPostToServer = (post) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
 export const addCommentByPostID =
   (postId, commentData) => async (dispatch, getState) => {
     try {
@@ -135,8 +137,6 @@ export const getAllCommentsByPostId = (postId) => async (dispatch) => {
 
     const comments = await getDocs(collection(docRef, "comments"));
 
-    console.log(comments);
-
     const payload = comments.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
@@ -144,10 +144,7 @@ export const getAllCommentsByPostId = (postId) => async (dispatch) => {
       dateForSort: doc.data().date,
     }));
 
-    console.log(payload);
-
     dispatch(postsAction.updateCommentsToPost(payload));
-    console.log("В стейт записано");
   } catch (error) {
     toastError(error);
   }

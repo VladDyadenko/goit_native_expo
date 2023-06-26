@@ -1,6 +1,6 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Image, Button } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../Redux/auth/authSelectors";
 import { getPosts } from "../../Redux/posts/postsSelector";
@@ -12,7 +12,6 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const DefaultScreenPosts = () => {
   const navigation = useNavigation();
-  const route = useRoute();
   const user = useSelector(getUser);
   const posts = useSelector(getPosts);
   const dispatch = useDispatch();
@@ -52,11 +51,12 @@ const DefaultScreenPosts = () => {
             ))}
           </View>
 
-          <Button title="foto" onPress={() => navigation.navigate("Create")} />
           <Button
-            title="profile"
-            onPress={() => navigation.navigate("Profile")}
+            style={{ marginBottom: 10 }}
+            title="Comments"
+            onPress={() => navigation.navigate("Comments")}
           />
+          <Button title="Map" onPress={() => navigation.navigate("Map")} />
         </View>
       </ScrollView>
     </KayboardBox>

@@ -163,8 +163,5 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     position: "relative",
-
-    // justifyContent:"center",
-    // alignItems:"center"
   },
 });

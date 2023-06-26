@@ -33,10 +33,6 @@ const CommentsScreen = () => {
   const { userId } = useSelector(getUser);
 
   useEffect(() => {
-    getAllCommentsByPostId();
-  }, []);
-
-  useEffect(() => {
     dispatch(getAllCommentsByPostId(postId));
     return () => {
       dispatch(getAllPosts());

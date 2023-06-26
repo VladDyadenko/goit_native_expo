@@ -17,7 +17,6 @@ import uploadPhotoToServer, {
   firebaseStore,
 } from "../../firebase/uploadPotoToServer";
 import { useDispatch, useSelector } from "react-redux";
-// import { getPosts } from "../../Redux/posts/postsSelectors,js";
 
 const initialState = { title: "", place: "" };
 
@@ -140,7 +139,6 @@ const styles = StyleSheet.create({
     height: 240,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "#F6F6F6",
   },
   btnCamera: {
     justifyContent: "center",
