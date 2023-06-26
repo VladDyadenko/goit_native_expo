@@ -1,48 +1,69 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Image, Button } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../Redux/auth/authSelectors";
 import { getPosts } from "../../Redux/posts/postsSelector";
 import KayboardBox from "../../components/KayboardBox";
 import { PostCard } from "../../components/PostCard";
+import { useEffect, useState } from "react";
+import { getAllPosts } from "../../Redux/posts/postsOperetions";
+import { ScrollView } from "react-native-gesture-handler";
 
-const PostsScreen = () => {
+const DefaultScreenPosts = () => {
   const navigation = useNavigation();
-  const route = useRoute();
   const user = useSelector(getUser);
   const posts = useSelector(getPosts);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAllPosts());
+  }, [dispatch]);
 
   return (
     <KayboardBox>
-      <View style={styles.container}>
-        <View style={{ alignItems: "flex-start", width: "100%" }}>
-          <View style={[styles.userCard, { marginBottom: 32 }]}>
-            <Image source={{ uri: user.userAvatar }} style={styles.image} />
-            <View>
-              <Text style={styles.userCardName}>{user.nickname}</Text>
-              <Text style={styles.userCardEmail}>{user.userEmail}</Text>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={{ alignItems: "flex-start", width: "100%" }}>
+            <View style={[styles.userCard, { marginBottom: 32 }]}>
+              <Image source={{ uri: user.userAvatar }} style={styles.image} />
+              <View>
+                <Text style={styles.userCardName}>{user.nickname}</Text>
+                <Text style={styles.userCardEmail}>{user.userEmail}</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View>
-          <View>
-            <PostCard />
-          </View>
-        </View>
 
-        <Button title="go to map" onPress={() => navigation.navigate("Map")} />
-        <Button
-          title="go to Comments"
-          onPress={() => navigation.navigate("Comments")}
-        />
-      </View>
+          <View style={{ flex: 1, width: "100%" }}>
+            {posts?.map((post) => (
+              <View key={post.id} style={{ marginBottom: 32, width: "100%" }}>
+                <PostCard
+                  title={post.title}
+                  likeCount={post.likeCount}
+                  imgUrl={post.imgUrl}
+                  imgUri={post.imgUri}
+                  location={post.location}
+                  locationData={post.locationData}
+                  comments={post.comments}
+                  post={post}
+                />
+              </View>
+            ))}
+          </View>
+
+          <Button
+            style={{ marginBottom: 10 }}
+            title="Comments"
+            onPress={() => navigation.navigate("Comments")}
+          />
+          <Button title="Map" onPress={() => navigation.navigate("Map")} />
+        </View>
+      </ScrollView>
     </KayboardBox>
   );
 };
 
-export default PostsScreen;
+export default DefaultScreenPosts;
 
 const styles = StyleSheet.create({
   container: {

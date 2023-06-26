@@ -17,13 +17,12 @@ import uploadPhotoToServer, {
   firebaseStore,
 } from "../../firebase/uploadPotoToServer";
 import { useDispatch, useSelector } from "react-redux";
-// import { getPosts } from "../../Redux/posts/postsSelectors,js";
 
 const initialState = { title: "", place: "" };
 
 const CreatePostsScreen = () => {
   const [info, setInfo] = useState(initialState);
-  const [placeLocation, setPlaceLocation] = useState(null);
+  const [location, setLocation] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [resetPhoto, setResetPhoto] = useState(false);
 
@@ -41,7 +40,7 @@ const CreatePostsScreen = () => {
 
   const onDataPictureTaken = (photo, location) => {
     setPhoto(photo.uri);
-    setPlaceLocation(location);
+    setLocation(location);
   };
 
   const sendPost = async () => {
@@ -50,7 +49,7 @@ const CreatePostsScreen = () => {
     const data = {
       ...info,
       photo: photoUrl,
-      placeLocation,
+      location,
       createdAt: Date.now(),
     };
 
@@ -62,18 +61,16 @@ const CreatePostsScreen = () => {
       imgUri: data.photo,
       location: data.place,
       locationData: {
-        latitude: data?.placeLocation?.latitude ?? 0,
-        longitude: data?.placeLocation?.longitude ?? 0,
+        latitude: data?.location?.latitude ?? 0,
+        longitude: data?.location?.longitude ?? 0,
       },
       comments: [],
     };
-    console.log(newPost);
-
     dispatch(uploadPostToServer(newPost));
-
-    navigation.navigate("DefaultScreen");
     setPhoto(null);
     setResetPhoto(true);
+    setInfo(initialState);
+    navigation.navigate("DefaultScreen");
   };
 
   return (
@@ -142,7 +139,6 @@ const styles = StyleSheet.create({
     height: 240,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "#F6F6F6",
   },
   btnCamera: {
     justifyContent: "center",

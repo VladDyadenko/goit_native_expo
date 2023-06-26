@@ -6,7 +6,7 @@ const initialState = {
   comments: [],
 };
 
-export const postsSlise = createSlice({
+export const postsSliсe = createSlice({
   name: "posts",
   initialState,
   reducers: {
@@ -26,4 +26,4 @@ export const postsSlise = createSlice({
   },
 });
 
-export const postsAction = postsSlise.actions;
+export const postsAction = postsSliсe.actions;
