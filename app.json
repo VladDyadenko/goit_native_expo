@@ -2,6 +2,7 @@
   "expo": {
     "name": "goit_native_expo",
     "slug": "goit_native_expo",
+    "description": "This is an learn project on React Native",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",

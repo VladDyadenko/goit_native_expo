@@ -25,6 +25,7 @@ const CreatePostsScreen = () => {
   const [location, setLocation] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [resetPhoto, setResetPhoto] = useState(false);
+  const [isDataValid, setIsDataValid] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -37,6 +38,9 @@ const CreatePostsScreen = () => {
       }
     })();
   });
+  useEffect(() => {
+    setIsDataValid(info.title !== "" && info.place !== "" && photo !== null);
+  }, [info, photo]);
 
   const onDataPictureTaken = (photo, location) => {
     setPhoto(photo.uri);
@@ -111,8 +115,25 @@ const CreatePostsScreen = () => {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.btn} onPress={sendPost}>
-        <Text style={styles.btnText}>Опублікувати</Text>
+      <TouchableOpacity
+        style={[
+          styles.btn,
+          {
+            backgroundColor: isDataValid ? "#FF6C00" : "#F6F6F6",
+          },
+        ]}
+        onPress={sendPost}
+      >
+        <Text
+          style={[
+            styles.btnText,
+            {
+              color: isDataValid ? "#fff" : "#BDBDBD",
+            },
+          ]}
+        >
+          Опублікувати
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btnDelete}>
         <TrashIcon />
@@ -189,7 +210,6 @@ const styles = StyleSheet.create({
     fontFamily: "roboto400",
     fontSize: 16,
     lineHeight: 19,
-    color: "#BDBDBD",
   },
   btn: {
     width: "100%",

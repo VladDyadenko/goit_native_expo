@@ -10,6 +10,7 @@ import {
 import { db } from "../../firebase/config";
 import { toastError } from "../../toastInfo/error";
 import { postsAction } from "./postsSlice";
+import { format } from "date-fns";
 
 export const getAllPosts = () => async (dispatch, getState) => {
   try {
@@ -111,12 +112,12 @@ export const addCommentByPostID =
   (postId, commentData) => async (dispatch, getState) => {
     try {
       const { nickname, userId, userAvatar } = getState().auth;
-
+      const data = format(new Date(), "dd MMMM yyyy | HH : mm");
       const comment = {
         comment: commentData,
         autorName: nickname,
-        authorID: userId,
-        date: Date.now(),
+        authorId: userId,
+        date: data,
         postId: postId,
         userAvatar: userAvatar,
       };
@@ -140,7 +141,6 @@ export const getAllCommentsByPostId = (postId) => async (dispatch) => {
     const payload = comments.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
-      date: dateBeautify(doc.data().date),
       dateForSort: doc.data().date,
     }));
 
