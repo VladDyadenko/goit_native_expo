@@ -17,6 +17,7 @@ export const getAllPosts = () => async (dispatch, getState) => {
     const { userId } = getState().auth;
 
     const posts = await getDocs(collection(db, "posts"));
+
     const newPosts = posts.docs.map(async (doc) => {
       const snapshotComments = await getCountFromServer(
         collection(doc.ref, "comments")

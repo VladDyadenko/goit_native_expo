@@ -4,8 +4,8 @@ import Constants from "expo-constants";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import Button from "./Button";
-import CameraIcon from "../assets/icon/CameraIcon";
 import * as Location from "expo-location";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 export default function CameraComponent({
   onDataPictureTaken,
@@ -95,7 +95,7 @@ export default function CameraComponent({
           <View style={styles.boxCamera}>
             <View style={styles.btnCamera}>
               <TouchableOpacity onPress={takePicture}>
-                <CameraIcon />
+                <SimpleLineIcons name="camera" size={20} color="#BDBDBD" />
               </TouchableOpacity>
             </View>
           </View>

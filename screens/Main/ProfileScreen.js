@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   FlatList,
@@ -11,12 +11,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../Redux/auth/authSelectors";
 import { useState } from "react";
-import { getOwnPosts } from "../../Redux/posts/postsSelector";
 import KayboardBox from "../../components/KayboardBox";
 import Avatar from "../../components/Avatar";
 import { authLogOut } from "../../Redux/auth/authOperetions";
 import LogOutIcon from "../../assets/icon/LogoutIcon";
 import { PostCard } from "../../components/PostCard";
+import { getAllPosts, getOwnPosts } from "../../Redux/posts/postsOperetions";
+import { getUserPosts } from "../../Redux/posts/postsSelector";
 
 const Empty = ({ height, ...another }) => (
   <View style={{ backgroundColor: "#ffffff", height }} {...another} />
@@ -26,7 +27,13 @@ const ProfileScreen = () => {
   const user = useSelector(getUser);
   const [avatarImg, setAvatarImg] = useState(user.userAvatar);
   const dispatch = useDispatch();
-  const posts = useSelector(getOwnPosts)
+
+  useEffect(() => {
+    dispatch(getAllPosts());
+    dispatch(getOwnPosts());
+  }, [dispatch]);
+
+  const posts = useSelector(getUserPosts)
     .slice()
     .sort((a, b) => {
       return b.createdAT - a.createdAT;
@@ -75,6 +82,7 @@ const ProfileScreen = () => {
                     location={item.location}
                     locationData={item.locationData}
                     comments={item.comments}
+                    countComments={item.countComments}
                     post={item}
                   />
                 </View>
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    paddingHorizontal: 16,
+
     backgroundColor: "#fff",
     resizeMode: "cover",
     justifyContent: "flex-end",

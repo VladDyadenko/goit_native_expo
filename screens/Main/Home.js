@@ -4,7 +4,7 @@ import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 import GridIcon from "../../assets/icon/GridIcon";
 import NewPostIcon from "../../assets/icon/NewPostIcon";
-import UserIcon from "../../assets/icon/UserIcon";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 const MainTab = createBottomTabNavigator();
 
@@ -40,7 +40,7 @@ const Home = () => {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
-            <UserIcon name="user" size={size} color={color} />
+            <SimpleLineIcons name="user" size={size} color={color} />
           ),
         }}
       />

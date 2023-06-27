@@ -10,12 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getComments, getOwnPosts } from "../../Redux/posts/postsSelector";
+import { getComments } from "../../Redux/posts/postsSelector";
 import { getUser } from "../../Redux/auth/authSelectors";
 import {
   addCommentByPostID,
   getAllCommentsByPostId,
   getAllPosts,
+  getOwnPosts,
 } from "../../Redux/posts/postsOperetions";
 import KayboardBox from "../../components/KayboardBox";
 import RoundUpIcon from "../../assets/icon/RoundUpIcon ";

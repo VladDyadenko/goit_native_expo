@@ -6,8 +6,8 @@ import { getUser } from "../../Redux/auth/authSelectors";
 import { getPosts } from "../../Redux/posts/postsSelector";
 import KayboardBox from "../../components/KayboardBox";
 import { PostCard } from "../../components/PostCard";
-import { useEffect, useState } from "react";
-import { getAllPosts } from "../../Redux/posts/postsOperetions";
+import { useEffect } from "react";
+import { getAllPosts, getOwnPosts } from "../../Redux/posts/postsOperetions";
 import { ScrollView } from "react-native-gesture-handler";
 
 const DefaultScreenPosts = () => {
@@ -18,6 +18,7 @@ const DefaultScreenPosts = () => {
 
   useEffect(() => {
     dispatch(getAllPosts());
+    dispatch(getOwnPosts());
   }, [dispatch]);
 
   return (
@@ -40,23 +41,16 @@ const DefaultScreenPosts = () => {
                 <PostCard
                   title={post.title}
                   likeCount={post.likeCount}
-                  imgUrl={post.imgUrl}
                   imgUri={post.imgUri}
                   location={post.location}
                   locationData={post.locationData}
                   comments={post.comments}
+                  countComments={post.countComments}
                   post={post}
                 />
               </View>
             ))}
           </View>
-
-          <Button
-            style={{ marginBottom: 10 }}
-            title="Comments"
-            onPress={() => navigation.navigate("Comments")}
-          />
-          <Button title="Map" onPress={() => navigation.navigate("Map")} />
         </View>
       </ScrollView>
     </KayboardBox>
